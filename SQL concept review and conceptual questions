@@ -1,0 +1,209 @@
+Review time ~~
+ALTER TABLE: Used to change the structure of an existing table [add a new column, delete an old one, or change a data type (like changing a name field from 50 to 100 characters)]
+DROP:  It deletes the entire table (or database) and everything inside it
+SELECT: The most common keyword. It tells the database which columns you want to see.
+ WHERE: Used to filter rows based on a specific condition. It happens before any grouping occurs.   Example: WHERE Price > 100
+ GROUP BY: This collapses multiple rows into summary rows. It’s almost always used with "aggregate functions" like COUNT(), SUM(), or AVG().
+HAVING: This is the one that trips people up! HAVING is exactly like WHERE, but it is used specifically for groups.
+•	Rule of Thumb: Use WHERE to filter individual items; use HAVING to filter groups (like "Only show cities where the total sales were over $5,000").
+ORDER BY: The final touch. It sorts your results in ascending (ASC) or descending (DESC) order. [by default, it sorts in ascending order]
+  PRIMARY KEY: Uniquely identifies a row; cannot be NULL.
+  UNIQUE: Ensures all values in a column are different; can be NULL.
+  NOT NULL: Ensures a column cannot have a NULL value.
+ CHECK: Ensures that all values in a column satisfy a specific condition (e.g., CHECK (age >= 18)).
+
+
+
+MCQ practice: 
+1. If you want to list all departments and the courses they offer, including departments that currently offer no courses, which join should you use?
+A) INNER JOIN
+B) LEFT JOIN (with Department as the left table)
+C) RIGHT JOIN (with Department as the left table)
+D) SELF JOIN
+
+Ans: left join 
+A LEFT JOIN returns all records from the "left" table (Departments) and the matched records from the "right" table (Courses). If there is no match for a department in the course table, the result will still show the department name, but with NULL in the course columns. This ensures you see every single department, even those that currently offer no courses.
+
+2. In the command ALTER TABLE student CHANGE name fullname VARCHAR(20);, what is required that is NOT required in a simple RENAME command?
+A) The table size
+B) The new data type
+C) The PRIMARY KEY status
+D) The database name
+ Ans:  The new data type
+Explanation:  the CHANGE command is used to rename a column, but it carries a specific requirement: "You must re-specify the data type while using CHANGE." * Syntax for CHANGE: ALTER TABLE table_name CHANGE old_col_name new_col_name DATA_TYPE;
+
+3. A subquery that returns a list of values to be used with the WHERE clause of a main query usually follows which operator?
+A) =
+B) >
+C) IN
+D) LIKE
+Ans: IN
+IN: Used when a subquery returns multiple values (a list). It checks if the value in the main query matches any value in that list. (e.g., WHERE department_id IN (SELECT id FROM locations WHERE city = 'Seattle')).
+
+4. Which aggregate function can be used on both numeric and non-numeric fields? 
+A) SUM
+B) AVG
+C) COUNT 
+D) None of the above
+Ans: count
+
+5. Which keyword is used to eliminate duplicate rows from the results of a SELECT query?
+A) UNIQUE
+B) DISTINCT
+C) ALL
+D) GROUP BY
+Ans: DISTINCT
+
+6. Which statement is true about the HAVING clause?
+A) It is used to filter rows before they are grouped.
+B) It can only be used if a GROUP BY clause is present.
+C) It cannot use aggregate functions like SUM or AVG.
+D) It is a replacement for the WHERE clause in all queries.
+Answer : B
+
+7. When using NATURAL JOIN between two tables, how are the tables linked?
+A) By the Primary Key of the first table and the Foreign Key of the second.
+B) By all columns that have the same name in both tables.
+C) By the first column of each table, regardless of name.
+D) You must specify the joining columns using the ON keyword.
+Answer: B
+
+Explanation
+A NATURAL JOIN is a type of join that creates an implicit join clause for you based on common column names.
+•	How it works: The database looks at both tables, identifies any columns that share the exact same name (e.g., both tables have a column named dept_id), and joins them automatically.
+•	Duplicate Columns: Unlike a regular join, a NATURAL JOIN will only show the joining column once in the final result set
+8. What is the result of SELECT COUNT(commission_pct) FROM employees; if 10 employees have a commission and 40 have a NULL value?
+A) 50
+B) 40
+C) 10
+D) 0
+Ans: 10 
+Explanation
+In SQL, aggregate functions like COUNT(column_name) behave differently than COUNT(*) when it comes to NULL values:
+•	COUNT(column_name): This only counts rows where the specified column contains a non-NULL value. Since only 10 employees have a commission value and the other 40 are NULL, the function only "sees" and counts those 10 entries.
+•	COUNT(*): This counts every single row in the table, regardless of whether the columns contain data or are NULL. If you had run SELECT COUNT(*) FROM employees;, the answer would have been 50.
+
+9.In a FLOAT(5,2) data type, what is the maximum value that can be stored?
+A) 999.99
+B) 99.999
+C) 5.2
+D) 500.00
+Ans: A
+
+10. When you use ALTER TABLE student MODIFY COLUMN age FLOAT(4,2);, what does the '4' represent?
+A) The number of decimal places.
+B) The total number of digits (precision) including those after the decimal.
+C) The number of digits allowed before the decimal point only.
+D) The maximum age allowed in the database.
+Ans : B
+11. If a subquery is used with the = operator, how many values must it return?
+A) Any number of values.
+B) At least two values.
+C) Exactly one value (Scalar).
+D) Zero values.
+Ans: C
+
+12. Which of the following is a DML (Data Manipulation Language) command?
+A) CREATE
+B) ALTER
+C) INSERT
+D) DROP
+Ans: C
+  Explanation: SQL commands are divided into categories based on what they do:
+DML (Data Manipulation): Deals with the data/records inside the table. (Examples: INSERT, UPDATE, DELETE, SELECT).
+DDL (Data Definition): Deals with the structure/schema of the database. (Examples: CREATE, ALTER, DROP, RENAME).
+
+13. What is the specific requirement when using the CHANGE command to rename a column?
+A) You must also change the table name.
+B) You must re-specify the data type, even if it stays the same.
+C) You must delete all data in that column first.
+D) You can only use it on Primary Keys.
+Ans: B
+
+Fill in the gaps:
+  To add a new column named Email to an existing table, you use the __________ command.
+•	Answer: ALTER TABLE
+  When a value in a FLOAT column is converted to an INT via an ALTER command, the decimal part is __________.
+•	Answer: Truncated (or lost)
+  The __________ join returns only the rows where there is a match in both joined tables.
+•	Answer: INNER JOIN
+To arrange query results by salary from highest to lowest, you would use ORDER BY salary __________.
+•	Answer: DESC
+
+
+ A __ is a field in one table that refers to the Primary Key in another table to link them together. 
+Answer: Foreign Key
+
+To filter groups based on a specific condition, you must use the __ clause rather than the WHERE clause. 
+
+Answer: HAVING
+
+The __________ join returns all records from the right table and the matched records from the left table.
+•	Answer: RIGHT JOIN
+  If you want to find the highest value in a column, you use the __________ aggregate function.
+•	Answer: MAX()
+  The command used to add a NOT NULL constraint to an existing column is __________.
+•	Answer: ALTER TABLE (specifically MODIFY or CHANGE)
+  In a subquery, the keyword __________ is used to check if the subquery returns any rows at all.
+•	Answer: EXISTS
+Explanation: SELECT department_name
+FROM departments d
+WHERE EXISTS (SELECT 1 FROM employees e WHERE e.department_id = d.department_id);
+•	The logic: For every department, the database checks: "Does even one employee exist with this department ID?"
+•	If yes, the department name is printed.
+
+The __________ keyword is used to provide a temporary name to a table or a column for the duration of a query.
+•	Answer: AS (Alias)
+
+A __________ join is used when you want to combine every row of the first table with every row of the second table (Cartesian product).
+•	Answer: CROSS JOIN
+ To automatically increase the value of an ID column every time a new record is added, you use the __________ attribute.
+•	Answer: AUTO_INCREMENT
+  The __________ keyword in a SELECT statement allows you to perform mathematical operations (like salary/30) and rename the result in the output.
+•	Answer: AS (Alias)
+  When changing a column from VARCHAR(100) to VARCHAR(5), the text gets __________ without warning.
+•	Answer: Cut off / Truncated
+  To combine two tables where you only want the results that appear in both, you use an __________.
+•	Answer: INNER JOIN
+
+
+
+Conceptual questions: 
+What is the difference between the % and _ wildcards in SQL?
+
+ % = 0 or more characters  length doesn't matter
+_ = exactly 1 single char both positions and length must match
+
+How does COUNT(*) differ from COUNT(column_name)? 
+
+Answer: COUNT(*) counts every row in a table regardless of whether it contains NULL values. COUNT(column_name) only counts the non-null values in that specific column.
+
+
+When a value in a FLOAT column is converted to an INT via an ALTER command, the decimal part is __.
+
+Answer: Truncated (or lost)
+
+Explain the difference between DELETE and DROP.
+
+Answer: DELETE (a DML command) removes specific rows from a table based on a condition, but the table structure remains. DROP (a DDL command) removes the entire table structure and all data within it from the database permanently.
+
+What is a "Self Join" and when might you use it?
+Answer: A Self Join is a regular join, but the table is joined with itself. You use it when a table has a foreign key that references its own primary key
+What happens to the data if you change a column's data type from VARCHAR(100) to VARCHAR(5)?
+Answer: Any text in those columns that is longer than 5 characters will be cut off.. data will be lost.
+Explain the difference between DELETE and DROP.
+Answer: DELETE (a DML command) removes specific rows from a table based on a condition, but the table structure remains. DROP (a DDL command) removes the entire table structure
+How do you set a default value of 18 for an age column that already exists? Answer:
+ALTER TABLE student
+ ALTER age SET DEFAULT 18;
+
+Why can’t you use a column alias defined in the SELECT clause within a WHERE clause?
+Answer: Because of the SQL Order of Execution. The WHERE clause is processed before the SELECT clause. Therefore, the database doesn't "know" the alias yet when it is filtering the rows.
+
+Explain the difference between NATURAL JOIN and JOIN...ON.
+Answer: NATURAL JOIN automatically joins tables based on all columns that share the same name and data type. JOIN...ON requires the user to manually specify which columns should be matched, providing more control and avoiding accidental joins on columns like "ID" which might exist in every table but mean different things.
+What is a "Composite Primary Key"?
+Answer: it is a Primary Key that consists of multiple columns (fields) together to uniquely identify a record, rather than just one.
+2. Difference between ON and USING
+ON: JOIN table2 ON table1.id = table2.id (Can be used for any columns).
+USING: JOIN table2 USING (id) (Can only be used if the column names are identical in both tables)
